@@ -23,8 +23,12 @@ NSString *authHeader = nil;
         NSData *data = [plaintext dataUsingEncoding:NSASCIIStringEncoding];
         authHeader = [[NSString alloc] initWithFormat:@"Basic %@", [data encodeBase64WithNewlines:NO]];
     }
-
-    [(NSMutableURLRequest *)aRequest setValue:authHeader forHTTPHeaderField:@"Authorization"];
+    
+    NSURL *destURL = [aRequest URL];
+    NSNumber *destPort = [destURL port];
+    if([destPort intValue] == SERVER_PORT) {
+        [(NSMutableURLRequest *)aRequest setValue:authHeader forHTTPHeaderField:@"Authorization"];
+    }
 
     return aRequest;
 }
