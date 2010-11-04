@@ -20,8 +20,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include "CGGeometry.h"
-
 #define _function(inline) function inline { return _##inline; }
 
 _function(CGPointMake(x, y))
@@ -69,6 +67,7 @@ _function(CGInsetMake(top, right, bottom, left))
 _function(CGInsetMakeZero())
 _function(CGInsetMakeCopy(anInset))
 _function(CGInsetIsEmpty(anInset))
+_function(CGInsetEqualToInset(lhsInset, rhsInset))
 
 CGMinXEdge = 0;
 CGMinYEdge = 1;

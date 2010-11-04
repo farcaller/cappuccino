@@ -23,8 +23,6 @@
 @import "CPColor.j"
 @import "CPGraphicsContext.j"
 
-#include "CoreGraphics/CGGeometry.h"
-
 
 function CPDrawTiledRects(
    /* CGRect */ boundsRect,
@@ -38,7 +36,7 @@ function CPDrawTiledRects(
     var colors = [];
 
     for (var i = 0; i < grays.length; ++i)
-        colors.push([CPColor colorWithWhite:grays[i] alpha:1.0]);
+        colors.push([CPColor colorWithCalibratedWhite:grays[i] alpha:1.0]);
 
     return CPDrawColorTiledRects(boundsRect, clipRect, sides, colors);
 }
@@ -56,6 +54,9 @@ function CPDrawColorTiledRects(
         slice = _CGRectMakeZero(),
         remainder = _CGRectMakeZero(),
         context = [[CPGraphicsContext currentContext] graphicsPort];
+
+    CGContextSaveGState(context);
+    CGContextSetLineWidth(context, 1.0);
 
     for (var sideIndex = 0; sideIndex < sides.length; ++sideIndex)
     {
@@ -100,6 +101,8 @@ function CPDrawColorTiledRects(
         CGContextSetStrokeColor(context, colors[sideIndex]);
         CGContextStrokePath(context);
     }
+
+    CGContextRestoreGState(context);
 
     return resultRect;
 }

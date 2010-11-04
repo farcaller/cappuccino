@@ -49,21 +49,24 @@
         [_dataView setFont:font];
         [_dataView setValue:selectedFont forThemeAttribute:@"font" inState:CPThemeStateSelectedDataView];
 
-        [_dataView setLineBreakMode:CPLineBreakByTruncatingTail];  
+        [_dataView setLineBreakMode:CPLineBreakByTruncatingTail];
+        [_dataView setValue:[dataViewCell alignment] forThemeAttribute:@"alignment"];
         [_dataView setValue:CPCenterVerticalTextAlignment forThemeAttribute:@"vertical-alignment"];
-        [_dataView setValue:CGInsetMake(0.0, 0.0, 0.0, 5.0) forThemeAttribute:@"content-inset"];
+        [_dataView setValue:CGInsetMake(0.0, 5.0, 0.0, 5.0) forThemeAttribute:@"content-inset"];
 
         var headerCell = [aCoder decodeObjectForKey:@"NSHeaderCell"],
             headerView = [[_CPTableColumnHeaderView alloc] initWithFrame:CPRectMakeZero()];
 
         [headerView setStringValue:[headerCell objectValue]];
+        [headerView setValue:[dataViewCell alignment] forThemeAttribute:@"text-alignment"];
+
         [self setHeaderView:headerView];
 
         _width = [aCoder decodeFloatForKey:@"NSWidth"];
         _minWidth = [aCoder decodeFloatForKey:@"NSMinWidth"];
         _maxWidth = [aCoder decodeFloatForKey:@"NSMaxWidth"];
 
-        _resizingMask = [aCoder decodeBoolForKey:@"NSIsResizeable"] ? CPTableColumnUserResizingMask : CPTableColumnAutoresizingMask;
+        _resizingMask = [aCoder decodeIntForKey:@"NSResizingMask"];
         _isHidden = [aCoder decodeBoolForKey:@"NSHidden"];
 
         _isEditable = [aCoder decodeBoolForKey:@"NSIsEditable"];
