@@ -166,6 +166,33 @@ var CPMenuItemStringRepresentationDictionary = [CPDictionary dictionary];
     [_menu itemChanged:self];
 }
 
+// Performs autoenable processing, returns isEnabled to propagate state to NativeHost
+- (BOOL)_performAutoenable
+{
+    if ([_menu autoenablesItems]) {
+        if (_target) {
+            if ([_target respondsToSelector:@selector(validateMenuItem:)]) {
+                var isEnabled = [_target validateMenuItem:self];
+                
+                _isEnabled = isEnabled;
+                [_menuItemView setDirty];
+                return _isEnabled;
+            } else {
+                return YES; // enabled by default
+            }
+        } else {
+            // XXX: will toggle state as part of _target check, required to sync stane with NativeHost
+            _isEnabled = isEnabled;
+            [_menuItemView setDirty];
+            
+            return NO;
+        }
+    } else {
+        // XXX: should it return NO, if target is nil?..
+        return [self isEnabled];
+    }
+}
+
 /*!
     Returns \c YES if the item is enabled.
 */
